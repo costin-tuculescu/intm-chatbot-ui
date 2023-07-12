@@ -317,10 +317,16 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
 
   useEffect(() => {
     throttledScrollDown();
-    selectedConversation &&
+    if (selectedConversation && selectedConversation.messages) {
       setCurrentMessage(
-        selectedConversation.messages[selectedConversation.messages.length - 2],
+        selectedConversation.messages[selectedConversation.messages?.length - 2],
       );
+    } else {
+      console.error("no current message");
+      //setCurrentMessage(undefined);
+      window.location.reload();
+    }
+    
   }, [selectedConversation, throttledScrollDown]);
 
   useEffect(() => {
@@ -396,7 +402,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
             ref={chatContainerRef}
             onScroll={handleScroll}
           >
-            {selectedConversation?.messages.length === 0 ? (
+            {selectedConversation?.messages?.length === 0 ? (
               <>
                 <div className="mx-auto flex flex-col space-y-5 md:space-y-10 px-3 pt-5 md:pt-12 sm:max-w-[600px]">
                   <div className="text-center text-3xl font-semibold text-gray-800 dark:text-gray-100">
@@ -439,9 +445,14 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
               </>
             ) : (
               <>
-                <div className="sticky top-0 z-10 flex justify-center border border-b-neutral-300 bg-neutral-100 py-2 text-sm text-neutral-500 dark:border-none dark:bg-[#444654] dark:text-neutral-200">
-                  {t('Model')}: {selectedConversation?.model.name} | {t('Temp')}
+                <div style={{borderColor: '#999', borderBottomWidth: 1, borderLeftWidth: 1, backgroundColor: '#fff', boxShadow: "0 10px 10px -5px rgba(0, 0, 0, 0.2)"}} className="sticky top-0 z-10 flex justify-center py-2 text-sm text-neutral-500 dark:border-none dark:bg-[#444654] dark:text-neutral-200">
+                  <span style={{display: 'flex', alignItems: 'center', marginRight: 5}}>
+                  <img src='/aibuddy.png' width='30' style={{borderRadius: 15, marginRight: 5}} />Intermedia AI Buddy |
+                  </span>
+                  <span style={{display: 'flex', alignItems: 'center', marginRight: 5}}>
+                  {t('Model')}: {selectedConversation?.model?.name} | {t('Temp')}
                   : {selectedConversation?.temperature} |
+                  </span>
                   <button
                     className="ml-2 cursor-pointer hover:opacity-50"
                     onClick={handleSettings}
@@ -463,7 +474,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
                   </div>
                 )}
 
-                {selectedConversation?.messages.map((message, index) => (
+                {selectedConversation?.messages?.map((message, index) => (
                   <MemoizedChatMessage
                     key={index}
                     message={message}

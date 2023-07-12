@@ -55,11 +55,14 @@ const Sidebar = <T,>({
   };
 
   return isOpen ? (
-    <div>
+    <div className='fixed top-0 ${side}-0 z-40 flex h-100 w-[260px] flex-none flex-col space-y-2 bg-[#4f535b] text-[14px] sm:relative sm:top-0'>
+      <img src='/unite.png'/>
       <div
-        className={`fixed top-0 ${side}-0 z-40 flex h-full w-[260px] flex-none flex-col space-y-2 bg-[#202123] p-2 text-[14px] transition-all sm:relative sm:top-0`}
+        className={`fixed top-0 ${side}-0 z-40 flex h-100 w-[260px] flex-none flex-col space-y-2 bg-[#4f535b] p-2 text-[14px] sm:relative sm:top-0`}
       >
+
         <div className="flex items-center">
+
           <button
             className="text-sidebar flex w-[190px] flex-shrink-0 cursor-pointer select-none items-center gap-3 rounded-md border border-white/20 p-3 text-white transition-colors duration-200 hover:bg-gray-500/10"
             onClick={() => {
